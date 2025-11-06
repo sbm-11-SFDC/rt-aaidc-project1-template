@@ -68,11 +68,3 @@ Google Generative AI (embeddings + model)
 ## 📄 License
 This project is licensed under the **MIT License**.  
 See the [LICENSE](LICENSE) file for details.
-
-## 🖼 Demo Screenshots
-
-| Question | Screenshot |
-|----------|------------|
-| What are VAEs used for? | ![](assets/what-are-vaes-used-for.png) |
-| What is the difference between VAEs and autoencoders? | ![](assets/difference-vaes-autoencoders.png) |
-| How do transformers model long-range dependencies? | ![](assets/transformers-long-range-dependencies.png) |
