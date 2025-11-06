@@ -1,0 +1,3 @@
+Autoencoders (AEs) learn to compress data into a latent vector and reconstruct it, but their latent space is deterministic. 
+Variational Autoencoders (VAEs) make the latent space probabilistic by learning a distribution (mean and variance) and sampling via the reparameterization trick. 
+This lets VAEs generate new, diverse samples, while plain AEs are mainly used for reconstruction and denoising. VAEs optimize a reconstruction loss plus a KL divergence term that regularizes the latent space.

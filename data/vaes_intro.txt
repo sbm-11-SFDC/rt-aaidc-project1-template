@@ -1,0 +1,3 @@
+Variational Autoencoders (VAEs) compress data into a probabilistic latent space and decode it to reconstruct or generate new samples. 
+They are used for image generation, anomaly detection, denoising, and imputation. 
+MNIST is a common teaching dataset.

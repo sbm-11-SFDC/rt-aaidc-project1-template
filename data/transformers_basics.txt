@@ -1,0 +1,2 @@
+Transformers use self-attention to model long-range dependencies and power modern LLMs. 
+Key ideas include positional encoding, multi-head attention, and large-scale pretraining followed by fine-tuning.
