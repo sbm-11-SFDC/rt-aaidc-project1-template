@@ -19,23 +19,8 @@ This project was built as part of the Ready Tensor **Agentic AI Developer Certif
 ---
 
 ## 📁 Project Structure
-rt-aaidc-project1-template/
-├── src/
-│   ├── app.py
-│   └── vectordb.py
-├── data/
-│   ├── vaes_intro.txt
-│   ├── transformers_basics.txt
-│   └── (any other docs)
-├── assets/                          # ✅ Screenshots / Demo images
-│   ├── what-are-vaes-used-for.png
-│   ├── difference-vaes-autoencoders.png
-│   └── transformers-long-range-dependencies.png
-├── requirements.txt
-├── .env.example
-├── .gitignore
-├── LICENSE
-└── README.md
+
+![alt text](<Project Structure.png>)
 
 ## ✅ Setup & Installation
 
