@@ -47,6 +47,13 @@ python -m venv .venv
 2️⃣ Install dependencies
 pip install -r requirements.txt
 
+3️⃣ Configure Environment Variables
+Create a .env file in the project root (same folder as src/ and requirements.txt):
+GOOGLE_API_KEY=your_google_api_key_here
+✅ .env is ignored by Git (protected)
+✅ .env.example is provided for reference
+
+
 ✅ Running the Application
 python .\src\app.py --q "What are VAEs used for?"
 python .\src\app.py --q "What is the difference between VAEs and autoencoders?"
