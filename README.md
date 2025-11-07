@@ -53,3 +53,10 @@ Google Generative AI (embeddings + model)
 ## 📄 License
 This project is licensed under the **MIT License**.  
 See the [LICENSE](LICENSE) file for details.
+
+👤 Author
+
+Suraj Mahale
+AI & Salesforce Developer
+GitHub: 
+https://github.com/sbm-11-SFDC
