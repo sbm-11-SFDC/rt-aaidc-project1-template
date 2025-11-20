@@ -23,7 +23,8 @@ Built as part of the Ready Tensor – Agentic AI Developer Certification (Module
 
 ## 📁 Project Structure
 
-![alt text](<Project Structure.png>)
+![Project Structure](./Project%20Structure.jpg)
+
 
 ## ✅ ⚙️ Setup & Installation
 
@@ -53,17 +54,11 @@ python .\src\app.py --q "What are VAEs used for?" --dump-context
 🧰 Tech Stack
 
 Python 3.9+
-
 LangChain Core
-
 LangChain Google GenAI
-
 Google Embedding Model: text-embedding-004
-
 Gemini 2.5 Flash (LLM)
-
 ChromaDB (vector storage)
-
 dotenv for secure environment configuration
 
 ## 📄 License
@@ -71,7 +66,6 @@ This project is licensed under the **MIT License**.
 See the LICENSE file for details.
 
 👤 Author
-
 Suraj Mahale
 AI & Salesforce Developer
 GitHub: 
