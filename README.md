@@ -7,15 +7,15 @@ Built as part of the Ready Tensor – Agentic AI Developer Certification (Module
 ---
 
 ## ✅ Project Features
-✔ Loads and preprocesses .txt documents
-✔ Sentence-aware chunking with overlap (prevents context loss)
-✔ Query preprocessing (lowercasing, trimming, punctuation cleaning)
-✔ Embedding via Google Generative AI (text-embedding-004)
-✔ Vector storage & similarity search using ChromaDB
-✔ Retry logic to handle embedding API timeouts
-✔ RAG generation using Gemini 2.5 Flash
-✔ Duplicated chunks removed during context assembly
-✔ Safe fallback response:
+✔ Loads and preprocesses `.txt` documents  
+✔ Sentence-aware chunking with overlap (prevents context loss)  
+✔ Query preprocessing (lowercasing, trimming, punctuation cleaning)  
+✔ Embedding via Google Generative AI (text-embedding-004)  
+✔ Vector storage & similarity search using ChromaDB  
+✔ Retry logic to handle embedding API timeouts  
+✔ RAG generation using Gemini 2.5 Flash  
+✔ Duplicated chunks removed during context assembly  
+✔ Safe fallback response  
 
 "I don't have enough information from the documents."
 
