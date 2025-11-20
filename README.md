@@ -52,7 +52,6 @@ To view retrieved chunks (debug mode):
 python .\src\app.py --q "What are VAEs used for?" --dump-context
 
 🧰 Tech Stack
-
 Python 3.9+
 LangChain Core
 LangChain Google GenAI
