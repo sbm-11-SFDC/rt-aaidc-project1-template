@@ -1,20 +1,23 @@
 # 📚 RAG-Based AI Assistant – Module 1 Project (AAIDC)
 
-A Retrieval-Augmented Generation (RAG) system that loads domain documents, embeds them, stores them in a vector database, and answers user questions grounded only in the retrieved context.
+This project implements a clean, production-ready Retrieval-Augmented Generation (RAG) pipeline that loads domain documents, chunks them with overlap, embeds them using Google Generative AI, stores vectors in ChromaDB, and generates answers grounded strictly in retrieved context — minimizing hallucinations.
 
-This project was built as part of the Ready Tensor **Agentic AI Developer Certification – Module 1**.
+Built as part of the Ready Tensor – Agentic AI Developer Certification (Module 1).
 
 ---
 
 ## ✅ Project Features
-✔ Loads and processes `.txt` documents  
-✔ Chunks text into searchable fragments  
-✔ Creates embeddings using **Google Generative AI embeddings**  
-✔ Stores vectors in **ChromaDB**  
-✔ Retrieves relevant chunks for a given query  
-✔ LLM generates grounded answers using retrieved context  
-✔ If context is insufficient, the model responds:
-> `"I don't have enough information from the documents."`
+✔ Loads and preprocesses .txt documents
+✔ Sentence-aware chunking with overlap (prevents context loss)
+✔ Query preprocessing (lowercasing, trimming, punctuation cleaning)
+✔ Embedding via Google Generative AI (text-embedding-004)
+✔ Vector storage & similarity search using ChromaDB
+✔ Retry logic to handle embedding API timeouts
+✔ RAG generation using Gemini 2.5 Flash
+✔ Duplicated chunks removed during context assembly
+✔ Safe fallback response:
+
+"I don't have enough information from the documents."
 
 ---
 
@@ -22,15 +25,15 @@ This project was built as part of the Ready Tensor **Agentic AI Developer Certif
 
 ![alt text](<Project Structure.png>)
 
-## ✅ Setup & Installation
+## ✅ ⚙️ Setup & Installation
 
-### 1️⃣ Create & activate virtual environment
+1️⃣ Create & activate virtual environment
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
 2️⃣ Install dependencies
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 3️⃣ Configure Environment Variables
 Create a .env file in the project root (same folder as src/ and requirements.txt):
@@ -44,15 +47,28 @@ python .\src\app.py --q "What are VAEs used for?"
 python .\src\app.py --q "What is the difference between VAEs and autoencoders?"
 python .\src\app.py --q "How do transformers model long-range dependencies?"
 
-✅ Tech Stack
+To view retrieved chunks (debug mode):
+python .\src\app.py --q "What are VAEs used for?" --dump-context
+
+🧰 Tech Stack
+
 Python 3.9+
-LangChain
-ChromaDB
-Google Generative AI (embeddings + model)
+
+LangChain Core
+
+LangChain Google GenAI
+
+Google Embedding Model: text-embedding-004
+
+Gemini 2.5 Flash (LLM)
+
+ChromaDB (vector storage)
+
+dotenv for secure environment configuration
 
 ## 📄 License
 This project is licensed under the **MIT License**.  
-See the [LICENSE](LICENSE) file for details.
+See the LICENSE file for details.
 
 👤 Author
 

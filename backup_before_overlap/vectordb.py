@@ -1,19 +1,19 @@
-# src/vectordb.py
 from __future__ import annotations
 from typing import List, Dict, Any, Optional
 import uuid
 import re
 import time
-import logging
 
 import chromadb
 from chromadb import Client
 from chromadb.config import Settings
 
+import logging
+logging.getLogger("chromadb").setLevel(logging.ERROR)
+
 # Embeddings via Google (uses GOOGLE_API_KEY from .env)
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-
-logging.getLogger("chromadb").setLevel(logging.ERROR)
+# If you ever want local (no API) embeddings, see the commented section below.
 
 
 class VectorDB:
@@ -27,7 +27,6 @@ class VectorDB:
         collection_name: str = "docs",
         embedding_model: str = "models/text-embedding-004",
         chunk_size: int = 500,
-        chunk_overlap: int = 40,
     ):
         self.client: Client = chromadb.Client(
             Settings(
@@ -36,11 +35,16 @@ class VectorDB:
             )
         )
         self.collection = self.client.get_or_create_collection(name=collection_name)
-        self.chunk_size = int(chunk_size)
-        self.chunk_overlap = max(0, int(chunk_overlap))
+        self.chunk_size = chunk_size
 
         # --- Google hosted embeddings (default) ---
         self.embedding_model = GoogleGenerativeAIEmbeddings(model=embedding_model)
+
+        # --- OPTIONAL: switch to local embeddings (no API calls) ---
+        # from langchain_huggingface import HuggingFaceEmbeddings
+        # self.embedding_model = HuggingFaceEmbeddings(
+        #     model_name="sentence-transformers/all-MiniLM-L6-v2"
+        # )
 
     # ---------------------------
     # Minimal retry helper
@@ -62,69 +66,41 @@ class VectorDB:
         raise last_err
 
     # ---------------------------
-    # Step 3: Text chunking (with overlap)
+    # Step 3: Text chunking
     # ---------------------------
     def chunk_text(self, text: str) -> List[str]:
         """
-        Sentence-aware chunking with configurable overlap (characters).
-        - chunk_size: max characters per chunk
-        - chunk_overlap: characters to carry into the next chunk for continuity
+        Sentence-aware chunking into ~chunk_size characters.
         """
         text = (text or "").strip()
         if not text:
             return []
 
-        # Conservative sentence split
         sentences = re.split(r"(?<=[.!?])\s+", text)
         chunks: List[str] = []
-        buf = ""
+        buf: List[str] = []
+        current_len = 0
 
         for s in sentences:
             s = s.strip()
             if not s:
                 continue
-
-            # candidate if we add this sentence to current buffer
-            cand = (buf + " " + s).strip() if buf else s
-
-            if len(cand) <= self.chunk_size:
-                buf = cand
+            cand = len(s) + (1 if current_len > 0 else 0)
+            if current_len + cand <= self.chunk_size:
+                buf.append(s)
+                current_len += cand
             else:
-                # flush current buffer as chunk
                 if buf:
-                    chunks.append(buf)
-
-                # prepare next buffer: carry overlap chars from last chunk if available
-                if self.chunk_overlap > 0 and chunks:
-                    carry = chunks[-1][-self.chunk_overlap :]
-                    # avoid splitting multi-byte characters awkwardly; simple concat is fine here
-                    buf = (carry + " " + s).strip()
-                else:
-                    buf = s
-
-                # If the new buffer still exceeds chunk_size (long single sentence),
-                # hard-split it into sub-chunks
-                if len(buf) > self.chunk_size:
-                    start = 0
-                    L = len(buf)
-                    while start < L:
-                        end = start + self.chunk_size
-                        sub = buf[start:end]
-                        chunks.append(sub)
-                        # move back by overlap to maintain continuity
-                        if self.chunk_overlap < self.chunk_size:
-                            start = end - self.chunk_overlap
-                        else:
-                            start = end
-                    buf = ""
+                    chunks.append(" ".join(buf))
+                buf = [s]
+                current_len = len(s)
 
         if buf:
-            chunks.append(buf)
+            chunks.append(" ".join(buf))
 
-        # final fallback: ensure at least one chunk
+        # fallback if very small
         if not chunks and text:
-            for i in range(0, len(text), self.chunk_size):
-                chunks.append(text[i : i + self.chunk_size])
+            chunks = [text]
 
         return chunks
 
@@ -147,9 +123,6 @@ class VectorDB:
                 continue
 
             chunks = self.chunk_text(content)
-            # debug: show how many chunks were created per doc
-            print(f"[debug] {meta.get('source','doc')} -> {len(chunks)} chunks (size={self.chunk_size}, overlap={self.chunk_overlap})")
-
             for idx, ch in enumerate(chunks):
                 all_ids.append(str(uuid.uuid4()))
                 all_docs.append(ch)
