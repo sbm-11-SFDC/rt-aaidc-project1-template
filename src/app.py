@@ -1,10 +1,13 @@
+# src/app.py
 from __future__ import annotations
 import os
 os.environ["POSTHOG_DISABLE"] = "true"
 os.environ["ANONYMIZED_TELEMETRY"] = "false"
+
 import glob
 import logging
 import warnings
+import re
 from typing import List, Dict, Any
 from pathlib import Path
 from dotenv import load_dotenv
@@ -12,7 +15,7 @@ from dotenv import load_dotenv
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-from vectordb import VectorDB
+from .vectordb import VectorDB
 
 # Silence noisy logs/warnings
 warnings.filterwarnings("ignore")
@@ -42,15 +45,24 @@ def load_documents() -> List[Dict[str, Any]]:
     return results
 
 
+def normalize_query(q: str) -> str:
+    """Simple query normalization: trim, lowercase, collapse whitespace."""
+    if not q:
+        return q
+    q = q.strip().lower()
+    q = re.sub(r"\s+", " ", q)
+    return q
+
+
 class RAGApp:
     def __init__(self, model_name: str = "gemini-2.5-flash"):
         load_dotenv()
         if not os.getenv("GOOGLE_API_KEY"):
             raise ValueError("GOOGLE_API_KEY missing in .env")
 
-        # Vector DB
+        # Vector DB: now accepts chunk_overlap default 40
         self.vector_db = VectorDB(
-            persist_dir="chromadb", collection_name="docs", chunk_size=500
+            persist_dir="chromadb", collection_name="docs", chunk_size=500, chunk_overlap=40
         )
 
         # LLM
@@ -87,8 +99,11 @@ QUESTION:
     # Step 7: RAG query pipeline (with de-duplicated context & sources)
     # ---------------------------
     def query(self, question: str, n_results: int = 3) -> Dict[str, Any]:
+        # normalize for retrieval but keep original for prompt
+        question_norm = normalize_query(question)
+
         # 1) Retrieve
-        hits = self.vector_db.search(question, n_results=n_results)
+        hits = self.vector_db.search(question_norm, n_results=n_results)
         docs, metas, dists = hits["documents"], hits["metadatas"], hits["distances"]
 
         # 2) Build context — dedupe by (source, chunk_index)
@@ -105,7 +120,7 @@ QUESTION:
 
         context = "\n\n---\n\n".join(labeled) if labeled else "N/A"
 
-        # 3) Generate
+        # 3) Generate — use original question (uncased) in prompt for readability
         prompt = self.prompt_template.format_messages(
             context=context, question=question
         )
