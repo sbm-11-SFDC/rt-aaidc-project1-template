@@ -42,10 +42,7 @@ Step 1 — Prepare Your Documents
 📁 Folder: data/
 Replace sample documents with your own text files:
 
-data/
-├── your_topic_1.txt
-├── your_topic_2.txt
-└── your_topic_3.txt
+![alt text](<Data Section.png>)
 
 Each file should contain plain text you want your RAG system to search.
 
