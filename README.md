@@ -192,7 +192,7 @@ python .\src\app.py --q "How do transformers model long-range dependencies?"
 To view retrieved chunks (debug mode):
 python .\src\app.py --q "What are VAEs used for?" --dump-context
 
-# 🧪 Experiments & Evaluation (Summary)
+🧪 Experiments & Evaluation (Summary)
 
 🔬 14.1 Experimental Setup
 
@@ -223,7 +223,7 @@ Overlap continuity score
 Robustness & retry success
 Zero hallucination validation
 
-# 🧰 Tech Stack
+🧰 Tech Stack
 Python 3.9+
 LangChain Core
 LangChain Google GenAI
@@ -232,7 +232,7 @@ Gemini 2.5 Flash (LLM)
 ChromaDB (vector storage)
 dotenv for secure environment configuration
 
-# 📄 License
+📄 License
 This project is licensed under the MIT License.
 See the [LICENSE] file for details
 
