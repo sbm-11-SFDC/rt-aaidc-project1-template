@@ -56,13 +56,9 @@ Step 2 — Document Loading
 🔧 Function: load_documents()
 
 What it does:
-
 Reads every .txt file inside /data
-
 Strips whitespace
-
 Attaches metadata (source: filename)
-
 Returns a structured list for ingestion
 
 Step 3 — Text Chunking With Overlap
@@ -71,15 +67,10 @@ Step 3 — Text Chunking With Overlap
 🔧 Function: chunk_text()
 
 Your implementation includes:
-
 Sentence-aware splitting
-
 Approx. 500-character chunk size
-
 40-character overlap to preserve continuity
-
 Natural punctuation-based segmentation
-
 This greatly improves retrieval quality.
 
 Step 4 — Document Ingestion
@@ -88,19 +79,12 @@ Step 4 — Document Ingestion
 🔧 Function: add_documents()
 
 What happens internally:
-
 Documents are chunked
-
 Embeddings created using text-embedding-004
-
 Stored in ChromaDB with metadata:
-
 source
-
 chunk_index
-
 length
-
 Retry logic handles API timeouts (504 errors)
 
 Step 5 — Similarity Search
@@ -109,13 +93,9 @@ Step 5 — Similarity Search
 🔧 Function: search()
 
 Responsibilities:
-
 Embed the user query
-
 Perform vector similarity search
-
 Retrieve top-k relevant chunks
-
 Return structured results (docs, metadatas, distances)
 
 Step 6 — RAG Prompt Template
@@ -123,15 +103,10 @@ Step 6 — RAG Prompt Template
 📄 File: src/app.py
 
 Your prompt enforces:
-
 Use only retrieved context
-
 2–4 sentence focused answers
-
 No hallucinations
-
 Optional single source citation
-
 This ensures grounded, consistent responses.
 
 Step 7 — RAG Query Pipeline
@@ -140,33 +115,21 @@ Step 7 — RAG Query Pipeline
 🔧 Function: query()
 
 Pipeline steps:
-
 Embed user question
-
 Retrieve relevant chunks
-
 Deduplicate by (source, chunk_index)
-
 Assemble context
-
 Pass prompt to Gemini
 
 Return:
-
 final answer
-
 retrieved chunks
-
 metadata
-
 source list
 
 🛠 Debug mode:
 
 python src/app.py --q "Your Question" --dump-context
-
-
-If you want, I can add this section into your full README and give the final complete file.
 
 
 ## 📁 Project Structure
@@ -242,7 +205,6 @@ dotenv for secure environment configuration
 # 📄 License
 This project is licensed under the MIT License.
 See the [LICENSE] file for details
-https://github.com/sbm-11-SFDC/rt-aaidc-project1-template/blob/main/LICENSE
 
 👤 Author
 Suraj Mahale
