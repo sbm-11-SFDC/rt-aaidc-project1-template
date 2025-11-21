@@ -38,6 +38,7 @@ Handle failures using retry and deduplication mechanisms
 These steps match your actual functions and file structure.
 
 Step 1 — Prepare Your Documents
+
 📁 Folder: data/
 Replace sample documents with your own text files:
 
@@ -46,7 +47,8 @@ data/
 ├── topic2.txt
 └── topic3.txt
 
-Each file should contain plain text content.
+
+Each file should contain plain text you want your RAG system to search.
 
 Step 2 — Document Loading
 
@@ -54,78 +56,117 @@ Step 2 — Document Loading
 🔧 Function: load_documents()
 
 What it does:
-Reads every .txt file in /data
-Strips whitespace + attaches metadata
-Returns a clean list of documents for vectorization
+
+Reads every .txt file inside /data
+
+Strips whitespace
+
+Attaches metadata (source: filename)
+
+Returns a structured list for ingestion
 
 Step 3 — Text Chunking With Overlap
 
 📄 File: src/vectordb.py
 🔧 Function: chunk_text()
 
-Your system uses:
-Sentence-aware splitting
-~500 character target size
-40-character overlap between chunks
-Natural punctuation-based boundaries
+Your implementation includes:
 
-This significantly improves retrieval quality and context continuity.
+Sentence-aware splitting
+
+Approx. 500-character chunk size
+
+40-character overlap to preserve continuity
+
+Natural punctuation-based segmentation
+
+This greatly improves retrieval quality.
 
 Step 4 — Document Ingestion
 
 📄 File: src/vectordb.py
 🔧 Function: add_documents()
 
-What happens:
-Text is chunked
+What happens internally:
+
+Documents are chunked
+
 Embeddings created using text-embedding-004
-Chunks stored in ChromaDB with metadata:
-source filename
-chunk index
+
+Stored in ChromaDB with metadata:
+
+source
+
+chunk_index
+
 length
-Retry logic handles embedding 504/timeouts reliably.
+
+Retry logic handles API timeouts (504 errors)
 
 Step 5 — Similarity Search
 
 📄 File: src/vectordb.py
 🔧 Function: search()
 
-The function:
-Embeds user query
-Performs vector search on stored embeddings
-Returns top-k most relevant chunks
-Outputs clean structured results for the pipeline
+Responsibilities:
+
+Embed the user query
+
+Perform vector similarity search
+
+Retrieve top-k relevant chunks
+
+Return structured results (docs, metadatas, distances)
 
 Step 6 — RAG Prompt Template
 
 📄 File: src/app.py
 
 Your prompt enforces:
-Answers only from retrieved context
-2–4 sentence focused responses
-No hallucination
-Optional source citation
-This keeps responses safe and grounded.
 
-Step 7 — The RAG Query Pipeline
+Use only retrieved context
+
+2–4 sentence focused answers
+
+No hallucinations
+
+Optional single source citation
+
+This ensures grounded, consistent responses.
+
+Step 7 — RAG Query Pipeline
 
 📄 File: src/app.py
 🔧 Function: query()
 
 Pipeline steps:
+
 Embed user question
-Retrieve chunks
+
+Retrieve relevant chunks
+
 Deduplicate by (source, chunk_index)
-Build final context
+
+Assemble context
+
 Pass prompt to Gemini
 
 Return:
-grounded answer
-context chunks
+
+final answer
+
+retrieved chunks
+
 metadata
-unique source list
-Debug view available using:
---dump-context
+
+source list
+
+🛠 Debug mode:
+
+python src/app.py --q "Your Question" --dump-context
+
+
+If you want, I can add this section into your full README and give the final complete file.
 
 
 ## 📁 Project Structure
@@ -200,7 +241,8 @@ dotenv for secure environment configuration
 
 # 📄 License
 This project is licensed under the MIT License.
-See the [LICENSE](https://github.com/sbm-11-SFDC/rt-aaidc-project1-template/blob/main/LICENSE) file for details
+See the [LICENSE] file for details
+https://github.com/sbm-11-SFDC/rt-aaidc-project1-template/blob/main/LICENSE
 
 👤 Author
 Suraj Mahale
