@@ -37,7 +37,7 @@ Handle failures using retry and deduplication mechanisms
 
 These steps match your actual functions and file structure.
 
-Step 1 — Prepare Your Documents
+# Step 1 — Prepare Your Documents
 
 📁 Folder: data/
 Replace sample documents with your own text files:
@@ -46,7 +46,7 @@ Replace sample documents with your own text files:
 
 Each file should contain plain text you want your RAG system to search.
 
-Step 2 — Document Loading
+# Step 2 — Document Loading
 
 📄 File: src/app.py
 🔧 Function: load_documents()
@@ -61,7 +61,7 @@ Attaches metadata (source: filename)
 
 Returns a structured list for ingestion
 
-Step 3 — Text Chunking With Overlap
+# Step 3 — Text Chunking With Overlap
 
 📄 File: src/vectordb.py
 🔧 Function: chunk_text()
@@ -78,7 +78,7 @@ Natural punctuation-based segmentation
 
 This greatly improves retrieval quality.
 
-Step 4 — Document Ingestion
+# Step 4 — Document Ingestion
 
 📄 File: src/vectordb.py
 🔧 Function: add_documents()
@@ -99,7 +99,7 @@ length
 
 Retry logic handles API timeouts (504 errors)
 
-Step 5 — Similarity Search
+# Step 5 — Similarity Search
 
 📄 File: src/vectordb.py
 🔧 Function: search()
@@ -114,7 +114,7 @@ Retrieve top-k relevant chunks
 
 Return structured results (docs, metadatas, distances)
 
-Step 6 — RAG Prompt Template
+# Step 6 — RAG Prompt Template
 
 📄 File: src/app.py
 
@@ -130,7 +130,7 @@ Optional single source citation
 
 This ensures grounded, consistent responses.
 
-Step 7 — RAG Query Pipeline
+# Step 7 — RAG Query Pipeline
 
 📄 File: src/app.py
 🔧 Function: query()
