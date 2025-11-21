@@ -162,9 +162,6 @@ source list
 python src/app.py --q "Your Question" --dump-context
 
 
-If you want, I can add this section into your full README and give the final complete file.
-
-
 ## 📁 Project Structure
 
 ![alt text](<Project Structure-1.png>)
